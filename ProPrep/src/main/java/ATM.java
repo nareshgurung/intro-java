@@ -1,55 +1,108 @@
 import java.util.Scanner;
 
 public class ATM {
+	
 public static void main(String[] args) {
 	
 	Scanner sc = new Scanner(System.in);
+	////////////////////////////////////////////////////
 	
+	////////////////////////////////////////////////////
 	//init Bank
 	Bank theBank = new Bank("Bank of Shine");
 	
 	// add a user, which also creates a saving account
-	User aUser = theBank.addUser("John", "Doe", "1234");
-	
-	// add a checking account 
-	Account newAccount = new Account("Checking", aUser, theBank);
-	aUser.addAccount(newAccount);
-	theBank.AddAccount(newAccount);
+//	User aUser = theBank.addUser("john", "white", "1234");
 	
 	User curUser;
 	while(true) {
+		Employee emp;
+		System.out.println("Please tell us Whow are you (Customer/Employee): ");
+		String differ = sc.nextLine();
+		if(differ.equalsIgnoreCase("customer")) {
 		//stay in the login prompt until successful login
-		curUser = ATM.mainMenuPrompt(theBank, sc);
-		
+		curUser = mainMenuPrompt(theBank, sc);
 		//stay in main menu until user quits
-		ATM.printUserMenu(curUser, sc);
+		printUserMenu(curUser, sc);
+	}else if(differ.equalsIgnoreCase("employee")) {
+		System.out.println("press 1 for sign up, 2 for login");
+		int choice = sc.nextInt();
+		switch(choice) {
+		case 1:
+			System.out.print("Please enter your firstNname: ");
+			String efirstname = sc.nextLine();
+			System.out.print("Please enter your lastName: ");
+			String elastname = sc.nextLine();
+			System.out.println("Please enter you password");
+			String epassword = sc.nextLine();
+			try {
+				emp =theBank.addEmployee(efirstname, elastname, epassword); // need to add employee in the bank
+				System.out.println("Welcome to you " + theBank);
+			} catch(Exception e) {
+				System.out.println("Username or password was incorect. Goodbye");
+			}
+		case 2:
+			System.out.println("Please enter your employee Id: ");
+			String eId = sc.nextLine();
+			System.out.println("Please enter your password: ");
+			String ePass = sc.nextLine();
+			emp = theBank.employeeLogin(eId, ePass);  //need to create employee login in bank
+			if(emp == null) {
+				System.out.println("Incorrect user ID/pin combination. Please try again. ");
+			}
+			break;
+		}
 	}
+  }
+		
 }
 
 public static User mainMenuPrompt(Bank theBank, Scanner sc) {
 	
 	//inits
+	
 	String userID;
 	String pin;
-	User authUser;
-	
+	User authUser = null;
+	/////////////////////////////////////////////////
+	do {
+	System.out.println("Login or Signup? Press 1 to signup, Press 2 to Sigin");
+	int choice = Integer.parseInt(sc.nextLine());
+	switch(choice) {
+	case 1: 
+			System.out.print("Please enter your firstNname: ");
+			String firstname = sc.nextLine();
+			System.out.print("Please enter your lastName: ");
+			String lastname = sc.nextLine();
+			System.out.println("Please enter you password");
+			String password = sc.nextLine();
+		///////////////////////////////////////////////////
+			try {
+				authUser =theBank.addUser(firstname, lastname, password);
+				System.out.println("Welcome to you " + theBank);
+			} catch(Exception e) {
+				System.out.println("Username or password was incorect. Goodbye");
+			}
+		break;
 	//prompt the user for user ID/pin combo until a correct one is reached
-		do {
-			System.out.printf("welcome\n", theBank.getName());
-			System.out.println("Enter user ID: ");
+		case 2:
+			System.out.print("welcome\n");
+			System.out.println("Enter user UserName: ");
 			userID = sc.nextLine();
-			System.out.println("enter pin:");
+			System.out.println("enter password:");
 			pin = sc.nextLine();
 			
 			//try to get the user object corresponding to the ID and pin combo
 			authUser = theBank.userLogin(userID,  pin);
 			if(authUser == null) {
-				System.out.println("Incorrect user ID/pin combination. "+ "Please try again. ");
+				System.out.println("Incorrect user ID/pin combination. Please try again. ");
 			}
-		}while(authUser == null); //continue looping until successful login
-		
-		return authUser;
+			break;
 	}
+}while(authUser == null); //continue looping until successful login
+	return authUser;
+}
+	
 
 public static void printUserMenu(User theUser, Scanner sc) {
 	
@@ -59,7 +112,7 @@ public static void printUserMenu(User theUser, Scanner sc) {
 	int choice;
 	//user menu 
 	do {
-		System.out.printf("Welcome %s, what would you like to do \n", theUser.getFirstName());
+		System.out.println("Welcome " + theUser.getFirstName() + ", What would you like to do \n");
 		System.out.println("  1) Show account transaction history");
 		System.out.println("  2) withdrawl");
 		System.out.println("  3) deposit");
@@ -102,9 +155,9 @@ public static void showTransHistory(User theUser, Scanner sc) {
 	
 	//get account whose transaction history to look at
 	do {
-		System.out.printf("Enter the number (1-%d) fo the account whose transactions\n "
-				+ "you want to see: ", theUser.numAccounts());
-		theAcct = sc.nextInt() -1;
+		System.out.println("Enter the number (1-2) fo the account whose transactions\n "
+				+ "you want to see: ");
+		theAcct = sc.nextInt()-1;
 		if(theAcct<0 || theAcct>= theUser.numAccounts()) {
 			System.out.println("invalid account plaeas ty again");
 		}
@@ -124,7 +177,7 @@ public static void transferFunds(User theUser, Scanner sc) {
 	
 	//get the account to transfer from 
 	do {
-		System.out.printf("enter the number (1-%d) of the account\n"
+		System.out.printf("enter the number (1-2) of the account\n"
 				+ "to transfer from: ", theUser.numAccounts());
 		fromAcct = sc.nextInt()-1;
 		if(fromAcct <0 || fromAcct >= theUser.numAccounts()) {
@@ -145,13 +198,12 @@ public static void transferFunds(User theUser, Scanner sc) {
 	
 	// get the amount to transer 
 	do {
-		System.out.printf("Enter the amount to transfer(max $%.02f): $", acctBal);
+		System.out.print("Enter the amount to transfer: $");
 		amount = sc.nextDouble();
 		if(amount <0) {
 			System.out.println("amount must be greater than zero");
 		}else if(amount> acctBal) {
-			System.out.printf("Amount must not be greater than balance \n"
-					+ "balance of $%.2f.\n", acctBal);
+			System.out.println("Amount must not be greater than balance");
 		}
 	}while(amount<0 || amount> acctBal);
 	//finally, do the transfer
@@ -169,7 +221,7 @@ public static  void withdrawFunds(User theUser, Scanner sc) {
 		
 		//get the account to transfer from 
 		do {
-			System.out.printf("enter the number(1-%d) of the account\n"
+			System.out.printf("enter the number(1-2) of the account\n"
 					+ "Withdraw from: ", theUser.numAccounts());
 			fromAcct = sc.nextInt()-1;
 			if(fromAcct <0 || fromAcct >= theUser.numAccounts()) {
@@ -179,13 +231,12 @@ public static  void withdrawFunds(User theUser, Scanner sc) {
 		acctBal = theUser.getAcctBalance(fromAcct);
 		
 		do {
-			System.out.printf("Enter the amount to withdraw (max $%.02f): $", acctBal);
+			System.out.print("Enter the amount to withdraw: $");
 			amount = sc.nextDouble();
 			if(amount <0) {
 				System.out.println("amount must be greater than zero");
 			}else if(amount> acctBal) {
-				System.out.printf("Amount must not be greater than balance \n"
-						+ "balance of $%.2f.\n", acctBal);
+				System.out.println("Amount must not be greater than balance" );
 			}
 		}while(amount<0 || amount> acctBal);
 		
@@ -193,6 +244,7 @@ public static  void withdrawFunds(User theUser, Scanner sc) {
 		sc.nextLine();
 		
 		//geta memo
+		System.out.println();
 		System.out.println("Enter a memo: ");
 		memo = sc.nextLine();
 		//do the withdrawl
@@ -208,17 +260,17 @@ public static  void withdrawFunds(User theUser, Scanner sc) {
 		String memo;
 //get the account to transfert from 
 			do {
-				System.out.printf("enter the number (1-%d) of the account\n"
-						+ "Account to Deposit : ", theUser.numAccounts());
+				System.out.println("enter the number (1-2) of the account\n"
+						+ "Account to Deposit : ");
 				toAcct = sc.nextInt()-1;
 				if(toAcct<0 || toAcct>= theUser.numAccounts()) {
-					System.out.println("Invalud account. Please try again. ");
+					System.out.println("Invalid account. Please try again. ");
 				}
 			}while(toAcct<0 || toAcct>= theUser.numAccounts());
 			acctBal = theUser.getAcctBalance(toAcct);
 					
 			do {
-				System.out.printf("Enter the amount to Deposit(max $%.02f): $", acctBal);
+				System.out.println("Enter the amount to Deposit: ");
 				amount = sc.nextDouble();
 				if(amount <0) {
 					System.out.println("amount must be greater than zero");
@@ -228,7 +280,7 @@ public static  void withdrawFunds(User theUser, Scanner sc) {
 			sc.nextLine();
 			
 			//geta memo
-			System.out.println("Enter a memo: ");
+			System.out.println("Enter a Post: ");
 			memo = sc.nextLine();
 			//do the withdrawl
 			theUser.addAcctTransaction(toAcct, amount, memo);	
