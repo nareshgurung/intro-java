@@ -1,3 +1,4 @@
+package com.bank.model;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -9,7 +10,7 @@ public class Employee {
 	private ArrayList<User> users;
 	private ArrayList<Account> accounts;
 
-	public Employee(String eName, String eLastName, String epassword) {
+	public Employee(String eName, String eLastName, String epassword ) {
 		super();
 		this.eFirstName = eName;
 		this.eLastName = eLastName;
@@ -39,6 +40,17 @@ public class Employee {
 
 	public String getIdNumber() {
 		return idNumber;
+	}
+	public String getEpassword() {
+		return ePassword;
+	}
+	public void setPassword(String ePassword) {
+		this.ePassword = ePassword;
+	}
+
+	@Override
+	public String toString() {
+		return "Hello " + this.eFirstName + " your idNumber=" + idNumber;
 	}
 	
 	

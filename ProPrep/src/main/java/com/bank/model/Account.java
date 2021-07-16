@@ -1,19 +1,28 @@
+package com.bank.model;
 
 import java.util.ArrayList;
 
 public class Account {
-	private String name;
+	private int id;
 	private String acountID;
-	private User holder;
+	private User holderUserName;
+	private int checkingAccount;
+	private int savingAccount;
 	private ArrayList<Transaction> transactions;
 
+	
 
-	public Account(String name, User holder, Bank theBank) {
+	public Account() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+
+	public Account(User holderUserName, Bank theBank) {
 		super();
 		
 		//set the account name and holder
-		this.name = name;
-		this.holder = holder;
+		this.holderUserName = holderUserName;
 		
 		//get new account number
 		this.acountID = theBank.getNewAccountUUID();
@@ -50,7 +59,7 @@ public class Account {
 	}
 	public void printTransHistory() {
 		
-		System.out.printf("\nTransaction history for accounts %s\n", this.acountID);
+		System.out.println("\nTransaction history for accounts %s\n" + this.acountID);
 		for(int t = this.transactions.size()-1; t<=0; t--) {
 			System.out.print(this.transactions.get(t));
 //					.getSummaryLine());
