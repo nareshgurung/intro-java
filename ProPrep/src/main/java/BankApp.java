@@ -1,6 +1,7 @@
 import java.util.List;
 import java.util.Scanner;
 
+import com.bank.dao.AccountDao;
 import com.bank.dao.UserDao;
 import com.bank.dao.UserDaoDB;
 import com.bank.model.Account;
@@ -9,6 +10,7 @@ import com.bank.model.Bank;
 import com.bank.model.Transaction;
 import com.bank.model.User;
 
+
 public class BankApp {
 	
 private static User users;
@@ -16,11 +18,13 @@ public static void main(String[] args) {
 	
 	Scanner sc = new Scanner(System.in);
 	////////////////////////////////////////////////////
+
 	
 	////////////////////////////////////////////////////
 	//init Bank
 	UserDao u  = new UserDaoDB();
 	Bank theBank = new Bank(u);
+	Account acc =new Account();
 //	System.out.println(u.getAllUsers());
 //	System.out.println(u.getUserByUsername("david243"));
 //System.out.println(theBank.addUser("naresh", "gurung", "password"));
@@ -129,12 +133,14 @@ public static void printUserMenu(User theUser, Scanner sc) {
 	
 	//print a summary of the user's accounts
 	theUser.printAccountsSummary();
+	System.out.println("1) Checking Account: " + theUser.getChAccount());
+	System.out.println("2) Saving Account: " + theUser.getSvAccount());
 	//init
 	int choice;
 	//user menu 
 	do {
 		System.out.println("Welcome " + theUser.getFirstName() + ", What would you like to do \n");
-		System.out.println("  1) Show account transaction history");
+		System.out.println("  1) view account");
 		System.out.println("  2) withdrawl");
 		System.out.println("  3) deposit");
 		System.out.println("  4) Transfer");
@@ -148,7 +154,7 @@ public static void printUserMenu(User theUser, Scanner sc) {
 		}
 		
 	}while(choice<1 || choice>5);
-	
+//	
 	switch(choice) {
 	case 1:
 		BankApp.showTransHistory(theUser, sc);
@@ -171,6 +177,7 @@ public static void printUserMenu(User theUser, Scanner sc) {
 		System.exit(1);
 	}
 	}
+//}
 public static void showTransHistory(User theUser, Scanner sc) {
 	int theAcct;
 	
@@ -273,7 +280,7 @@ public static  void withdrawFunds(User theUser, Scanner sc) {
 		
 		
 }
-
+//
 	public static void depositFunds(User theUser, Scanner sc) {
 		int toAcct;
 		double amount;
@@ -283,15 +290,15 @@ public static  void withdrawFunds(User theUser, Scanner sc) {
 			do {
 				System.out.println("enter the number (1-2) of the account\n"
 						+ "Account to Deposit : ");
-				toAcct = sc.nextInt()-1;
-				if(toAcct<0 || toAcct>= theUser.numAccounts()) {
+				toAcct = sc.nextInt();
+				if(toAcct<0 ||toAcct>=theUser.numAccounts())	{
 					System.out.println("Invalid account. Please try again. ");
 				}
 			}while(toAcct<0 || toAcct>= theUser.numAccounts());
 			acctBal = theUser.getAcctBalance(toAcct);
 					
 			do {
-				System.out.println("Enter the amount to Deposit: ");
+//				System.out.println("Enter the amount to Deposit: ");
 				amount = sc.nextDouble();
 				if(amount <0) {
 					System.out.println("amount must be greater than zero");
@@ -299,14 +306,13 @@ public static  void withdrawFunds(User theUser, Scanner sc) {
 			}while(amount<0);
 			
 			sc.nextLine();
-			
-			//geta memo
+//			
+//			//geta memo
 			System.out.println("Enter a Post: ");
 			memo = sc.nextLine();
-			//do the withdrawl
+//			//do the withdrawl
 			theUser.addAcctTransaction(toAcct, amount, memo);	
-	
-}	
+	}	
 	///////////////////////////////// leave here. 
 	public static void printEmployeeMenu(Employee emp, Scanner sc) {
 		
@@ -344,18 +350,18 @@ public static  void withdrawFunds(User theUser, Scanner sc) {
 //		case 3:
 //			ATM.transferFund(emp, sc);
 //			break;
-		case 4:
-			BankApp.viewAcct(account, sc);
-			break;
-		}
+//		case 4:
+//			BankApp.viewAcct(account, sc);
+//			break;
+//		}
 		//redisplay this menu unless the user wants to quit
-		if(choice != 4) {
-			BankApp.printEmployeeMenu(emp,  sc);
-			
-		}else {
-			System.out.print("Thank you for being a valued Customer.");
-			System.exit(1);
-		}
+//		if(choice != 4) {
+//			BankApp.printEmployeeMenu(emp,  sc);
+//			
+//		}else {
+//			System.out.print("Thank you for being a valued Customer.");
+//			System.exit(1);
+	}
 	}
 		public static void rijectAcctandApprove(Bank theBank, User users, Scanner sc) {
 			
@@ -373,16 +379,16 @@ public static  void withdrawFunds(User theUser, Scanner sc) {
 			
 		}while(dacct.equals(users.getUserName()));
 }
-	public static void viewAcct(Account account, Scanner sc) {
-//	users = null;
-		System.out.println("Please enter the account Number: ");
-
-		String acct = Integer.toString(sc.nextInt());
-		if(acct.equals(account.getUUID())) {
-			users.printAccountsSummary();
-			users.printAcctTransHistory(Integer.parseInt(acct));
-			}else{
-			System.out.println("invalid accountNumber");
-		}
+//	public static void viewAcct(Account account, Scanner sc) {
+////	users = null;
+//		System.out.println("Please enter the account Number: ");
+//
+//		String acct = Integer.toString(sc.nextInt());
+//		if(acct.equals(account.getUUID())) {
+//			users.printAccountsSummary();
+//			users.printAcctTransHistory(Integer.parseInt(acct));
+//			}else{
+//			System.out.println("invalid accountNumber");
+//		}
 }
-}
+//}

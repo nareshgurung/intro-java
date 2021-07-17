@@ -19,16 +19,17 @@ public class AccountDB implements AccountDao {
 		ConnectionUtil conUtil = ConnectionUtil.getConnectionUtil();
 		
 		@Override
-		public void addAccount(Account acct) {
+		public void addAccount(Account name) {
+			List<User> users = new ArrayList<User>();
 			try {
 				Connection con = conUtil.getConnection();
-				String sql = "INSERT INTO users(String holder_username, Strimg checking_account_id, String saving_account_id) values"
-						+ "(?,?)";
+				String sql = "INSERT INTO users(String user_name, checking_balance, String saving_balance) values"
+						+ "(?,?, ?) WHERE users.username = '"+ name + "'";
 				PreparedStatement ps = con.prepareStatement(sql);
 				
-				ps.setString(1, acct.getHolderUserName());
-				ps.setString(2, acct.getCheckingAccount());
-				ps.setString(3, acct.getSavingAccount());
+				ps.setString(1, name.getHolderUserName());
+				ps.setDouble(2, name.getCheckingBalance());
+				ps.setDouble(3, name.getSavingBalance());
 
 				ps.execute();
 				
@@ -52,11 +53,11 @@ public class AccountDB implements AccountDao {
 				
 				while(rs.next()) {
 					act.setId(rs.getInt(1));
-					act.setCheckingAccount(rs.getString(2));
-					act.setSavingAccount(rs.getString(3));
+					act.setCheckingBalance(rs.getString(2));
+					act.setSavingBalance(rs.getString(3));
 					
 				}
-				return act;
+				return null;
 				
 			} catch(SQLException e) {
 				e.printStackTrace();
@@ -67,6 +68,12 @@ public class AccountDB implements AccountDao {
 
 		@Override
 		public User getUserAccount() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public List<Account> getAllAccount() {
 			// TODO Auto-generated method stub
 			return null;
 		}
