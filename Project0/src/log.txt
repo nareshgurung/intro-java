@@ -1,2 +1,24 @@
 2021-07-09 17:02:42 INFO  Logging:53 - User: nareshgurung2311 posted a new post
 2021-07-09 19:40:30 INFO  Logging:53 - User: nareshgurung2311 posted a new post
+2021-07-10 22:07:02 WARN  Logging:79 - User tried logging in that does not exist
+2021-07-12 08:44:20 WARN  Logging:79 - User tried logging in that does not exist
+2021-07-12 11:46:15 INFO  Logging:53 - User: nareshgurung2311 posted a new post
+2021-07-12 14:30:31 INFO  Logging:53 - User: domamgr9726 posted a new post
+2021-07-13 12:47:24 INFO  Logging:53 - User: nareshgurung2311 posted a new post
+2021-07-15 16:13:13 INFO  Logging:36 - New user has registered
+2021-07-15 16:45:45 INFO  Logging:36 - New user has registered
+2021-07-15 16:45:45 WARN  Logging:43 - User tried logging in that does not exist
+2021-07-15 16:46:06 WARN  Logging:43 - User tried logging in that does not exist
+2021-07-15 16:46:20 WARN  Logging:43 - User tried logging in that does not exist
+2021-07-15 16:47:31 WARN  Logging:43 - User tried logging in that does not exist
+2021-07-15 16:47:41 INFO  Logging:36 - New user has registered
+2021-07-15 16:47:41 WARN  Logging:43 - User tried logging in that does not exist
+2021-07-15 16:48:23 INFO  Logging:36 - New user has registered
+2021-07-15 16:48:23 WARN  Logging:47 - User tried to login with invalid credentials
+2021-07-15 16:49:11 WARN  Logging:47 - User tried to login with invalid credentials
+2021-07-15 17:01:46 INFO  Logging:51 - User was logged in.
+2021-07-15 17:17:26 INFO  Logging:51 - User was logged in.
+2021-07-15 17:18:37 INFO  Logging:51 - User was logged in.
+2021-07-15 22:42:16 INFO  Logging:51 - User was logged in.
+2021-07-15 22:42:46 INFO  Logging:51 - User was logged in.
+2021-07-15 22:43:02 INFO  Logging:51 - User was logged in.
