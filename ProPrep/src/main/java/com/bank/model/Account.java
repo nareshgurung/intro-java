@@ -1,40 +1,48 @@
 package com.bank.model;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Account {
+	private String name;
 	private int id;
-	private String acountID;
-	private User holderUserName;
-	private int checkingAccount;
-	private int savingAccount;
+	private String accountID;
+	private String holderUserName;
 	private ArrayList<Transaction> transactions;
-
+	private ArrayList<User> users;
 	
 
+	
 	public Account() {
-		super();
-		// TODO Auto-generated constructor stub
+		users = new ArrayList<User>();
 	}
-
-
-	public Account(User holderUserName, Bank theBank) {
+	public Account(String name, String holderUserName, String accountID,  Bank theBank) {
 		super();
 		
+		this.name = name;
 		//set the account name and holder
 		this.holderUserName = holderUserName;
 		
 		//get new account number
-		this.acountID = theBank.getNewAccountUUID();
+		this.accountID = theBank.getNewAccountUUID();
 		
 		//init transactions
 		this.transactions = new ArrayList<Transaction>();
 		
 	}
-
+	public Account(int id,  String username, String accountId) {
+		this.id =id;
+		this.holderUserName = username;
+		this.accountID = accountId;
+	}
+	public Account(String username, String accountId) {
+		this.holderUserName = username;
+		this.accountID = accountId;
+	}
+	
 
 	public String getUUID() {
-		return this.acountID;
+		return this.accountID;
 	}	
 	
 	public String getSummaryLine() {
@@ -44,9 +52,9 @@ public class Account {
 		
 		//format the summary line, depending on the whether the balance is negative
 		if(balance >=0) {
-			return String.format("%s : $%.02f : %s", this.acountID, balance, this.name);
+			return String.format("%s : $%.02f : %s", this.accountID, balance, this.name);
 		}else {
-			return String.format("%s : $(%.02f) : %s", this.acountID, balance, this.name);
+			return String.format("%s : $(%.02f) : %s", this.accountID, balance, this.name);
 		}
 	}
 	
@@ -59,7 +67,7 @@ public class Account {
 	}
 	public void printTransHistory() {
 		
-		System.out.println("\nTransaction history for accounts %s\n" + this.acountID);
+		System.out.println("\nTransaction history for accounts %s\n" + this.accountID);
 		for(int t = this.transactions.size()-1; t<=0; t--) {
 			System.out.print(this.transactions.get(t));
 //					.getSummaryLine());
@@ -71,5 +79,34 @@ public class Account {
 		Transaction newTrans = new Transaction(amount, memo, this);
 		this.transactions.add(newTrans);
 	}
+	public void setCheckingAccount(String account) {
+		this.accountID = account;
+	}
+	public String getCheckingAccount() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	public void setSavingAccount(String account) {
+		this.accountID = account;
+	}
+	public String getSavingAccount() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	public String getHolderUserName() {
+		return holderUserName;
+	}
+	public void setHolderUserName(String holderUserName) {
+		this.holderUserName = holderUserName;
+	}
+	public void setId(int int1) {
+		this.id = int1;
+		// TODO Auto-generated method stub
+		
+	}
+	public int getId() {
+		return id;
+	}
+	
 	
 }

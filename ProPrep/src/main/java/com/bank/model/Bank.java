@@ -26,33 +26,6 @@ public class Bank {
 
 	
 	// account uuid
-	public String getNewAccountUUID() {
-			//inits
-			String uuid;
-			Random rng = new Random();
-			int len = 10;
-			boolean nonUnique;
-					
-			
-			do {
-				uuid = "";
-				for(int c= 0; c<len; c++) {
-					uuid +=((Integer)rng.nextInt(10)).toString();
-				}
-				// check to make sure it's unique
-				nonUnique = false;
-				for(Account a : this.accounts) {
-					if(uuid.compareTo(a.getUUID())==0) {
-						nonUnique = true;
-						break;
-					}
-				}
-				
-			}while(nonUnique);
-			
-			return uuid;
-			
-		}
 	public void AddAccount(Account anAcct) {
 		this.accounts.add(anAcct);
 	}
@@ -64,15 +37,15 @@ public class Bank {
 		
 		newUser= uDao.getUserByUsername(newUser.getUserName());
 		//create a saving account for the user and add to User and Bank accounts lists
-		Account newAccount = new Account("Saving", newUser, this);
-		Account newAccount1 = new Account("checking", newUser, this);
-
-				
-		// add to holder and bank lists
-		newUser.addAccount(newAccount);
-		this.accounts.add(newAccount);
-		newUser.addAccount(newAccount1);
-		this.accounts.add(newAccount1);
+//		Account newAccount = new Account("Saving", newUser, this);
+//		Account newAccount1 = new Account("checking", newUser, this);
+//
+//				
+//		// add to holder and bank lists
+//		newUser.addAccount(newAccount);
+//		this.accounts.add(newAccount);
+//		newUser.addAccount(newAccount1);
+//		this.accounts.add(newAccount1);
 //		
 		
 		return newUser;
@@ -108,7 +81,33 @@ public class Bank {
 	public String toString() {
 		return "Bank of Shine";
 	}
-
+	public String getNewAccountUUID() {
+		//inits
+		String uuid;
+		Random rng = new Random();
+		int len = 10;
+		boolean nonUnique;
+				
+		
+		do {
+			uuid = "";
+			for(int c= 0; c<len; c++) {
+				uuid +=((Integer)rng.nextInt(10)).toString();
+			}
+			// check to make sure it's unique
+			nonUnique = false;
+			for(Account a : this.accounts) {
+				if(uuid.compareTo(a.getUUID())==0) {
+					nonUnique = true;
+					break;
+				}
+			}
+			
+		}while(nonUnique);
+		
+		return uuid;
+		
+	}
 
 	public Employee addEmployee(String efirstname, String elastname, String epassword) {
 		Employee newUser = new Employee(efirstname, elastname, epassword);

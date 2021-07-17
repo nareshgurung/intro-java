@@ -11,7 +11,6 @@ import java.util.ArrayList;
 
 import com.example.dao.FileIO;
 import com.example.dao.UserDao;
-import com.example.models.Account;
 import com.example.models.User;
 
 
@@ -19,73 +18,39 @@ import com.example.models.User;
 import com.example.models.User;
 public class UserService {
 	
-	private String file;
-	private FileIO<User> io;
+	private UserDao uDao;
+	public UserService(UserDao u) {
+		this.uDao = u;
+	}
 	
-	public UserService(String file) {
-		this.file = file;
-		this.io = new FileIO<User>(file);
-	}
-	public User signUp(String first, String last, String password) {
-		ArrayList<User> users;
-		try {
-			users = io.readObject();
-		}catch(FileNotFoundException e) {
-			System.out.println("Creating a blank users array");
-			users = new ArrayList<User>();
-		}catch(Exception e) {
-			e.printStackTrace();
-			return null;
-		}
+	public User signUp(String first, String last, String email, String password)throws UserNameAlreadyExists{
+		User u = new User(first, last, email, password);
+		uDao.createUser(u);
 		
-		User u = new User(first, last, password);
+		u = uDao.getUserByUsername(u.getUsername());
 		
-		//check to see if the users username is already stored somewhere
-		for(int i=0; i<users.size(); i++) {
-			if(users.get(i).getUserName().equals(u.getUserName())) {
-				Logging.logger.warn("Username created that already exists in the database");
-				throw new UserNameAlreadyExists();
-			}
+		if(u == null) {
+			Logging.logger.warn("Usedname created that already exists in the database");
+			throw new UserNameAlreadyExists();
 		}
-		users.add(u);
-		io.writeObject(users);
+		Logging.logger.info("New user has registered");
 		return u;
-		
-}
-	public User login(String username, String password) {
-		ArrayList<User> users;
-		try {
-			users = io.readObject();
-		}catch(FileNotFoundException e) {
-			users = new ArrayList<User>();
-		}catch(Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-		
-		// we first want to loop through our users list to see if we can mathc a username
-		for(int i=0; i<users.size(); i++) {
-			//if the username exits in the file , we then want to check the password
-			if(users.get(i).getUserName().equals(username)) {
-				if(users.get(i).getPassword().equals(password)){
-					System.out.println("You are signed in");
-					return users.get(i);
-				}else{
-					Logging.logger.warn("User tried logging in with invalid credentials");
-					throw new InvalidCredentialsException();
-					}
-				}
-		}
-		Logging.logger.warn("User tried logging in that does not exist");
-		throw new UserDoesNotExistException();
 	}
-	public List<User> getAllUsers(){
-		ArrayList<User> users;
-		try {
-			users = io.readObject();
-		}catch(Exception e) {
-			users = new ArrayList<User>();
+	public User signIn(String username, String password) throws UserDoesNotExistException, InvalidCredentialsException  {
+		
+		User u = uDao.getUserByUsername(username);
+		if(u.getId()== 0) {
+			Logging.logger.warn("User tried logging in that does not exist");
+					throw new UserDoesNotExistException();
 		}
-		return users;
+		else if(!u.getPassword().equals(password)) {
+			Logging.logger.warn("User tried to login with invalid credentials");
+			throw new InvalidCredentialsException();
+		}
+		else {
+			Logging.logger.info("User was logged in.");
+		}
+		
+		return u;
 	}
 }
