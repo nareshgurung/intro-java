@@ -1,6 +1,9 @@
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import com.bank.dao.EmployeeDao;
+import com.bank.dao.EmployeeDaoDB;
 import com.bank.dao.UserDao;
 import com.bank.dao.UserDaoDB;
 import com.bank.model.Account;
@@ -20,7 +23,9 @@ public static void main(String[] args) {
 	////////////////////////////////////////////////////
 	//init Bank
 	UserDao u  = new UserDaoDB();
+	EmployeeDao emp =new EmployeeDaoDB();
 	Bank theBank = new Bank(u);
+	Bank theBankE = new Bank(emp);
 //	System.out.println(u.getAllUsers());
 //	System.out.println(u.getUserByUsername("david243"));
 //System.out.println(theBank.addUser("naresh", "gurung", "password"));
@@ -28,8 +33,8 @@ public static void main(String[] args) {
 	// add a user, which also creates a saving account
 //	User aUser = theBank.addUser("john", "white", "1234");
 	User curUser;
+	Employee employee;
 	while(true) {
-		Employee emp = null;
 		System.out.println("Please tell us Who are you (Customer/Employee): ");
 		String differ = sc.nextLine();
 		if(differ.equalsIgnoreCase("customer")) {
@@ -50,9 +55,9 @@ public static void main(String[] args) {
 			System.out.println("Please enter you password");
 			String epassword = sc.nextLine();
 			try {
-				emp =theBank.addEmployee(efirstname, elastname, epassword); // need to add employee in the bank
+				employee =theBankE.addEmployee(efirstname, elastname, epassword); // need to add employee in the bank
 				System.out.println("Welcome to you " + theBank);
-				System.out.println(emp);
+				System.out.println(employee);
 			} catch(Exception e) {
 				System.out.println("Username or password was incorect. Goodbye");
 			}
@@ -63,13 +68,15 @@ public static void main(String[] args) {
 			String eId = sc.nextLine();
 			System.out.println("Please enter your password: ");
 			String ePass = sc.nextLine();
-			emp = theBank.employeeLogin(eId, ePass);  //need to create employee login in bank
-			if(emp == null) {
+			try {
+				employee = theBankE.employeeLogin(eId, ePass);  //need to create employee login in bank
+				System.out.println(employee);
+			}catch(Exception e) {
 				System.out.println("Incorrect user ID/pin combination. Please try again. ");
 			}
 			break;
 		}
-		printEmployeeMenu(emp, sc);
+//		printEmployeeMenu(emp, sc);
 	}
   }
 		
@@ -129,14 +136,16 @@ public static void printUserMenu(User theUser, Scanner sc) {
 	
 	//print a summary of the user's accounts
 	theUser.printAccountsSummary();
+	System.out.println("checking Account no:" + theUser.getCheckingAccount());
+	System.out.println("saving Account no:" + theUser.getSavingAccount());
 	//init
 	int choice;
 	//user menu 
 	do {
 		System.out.println("Welcome " + theUser.getFirstName() + ", What would you like to do \n");
-		System.out.println("  1) Show account transaction history");
+		System.out.println("  1)deposit ");
 		System.out.println("  2) withdrawl");
-		System.out.println("  3) deposit");
+		System.out.println("  3) Show account transaction history");
 		System.out.println("  4) Transfer");
 		System.out.println("  5) Quit");
 		System.out.println();
@@ -151,13 +160,13 @@ public static void printUserMenu(User theUser, Scanner sc) {
 	
 	switch(choice) {
 	case 1:
-		BankApp.showTransHistory(theUser, sc);
+		BankApp.depositFunds(theUser, sc);
 		break;
 	case 2:
 		BankApp.withdrawFunds(theUser, sc);
 		break;
 	case 3:
-		BankApp.depositFunds(theUser, sc);
+		BankApp.showTransHistory(theUser, sc);
 		break;
 	case 4:
 		BankApp.transferFunds(theUser, sc);
@@ -274,7 +283,8 @@ public static  void withdrawFunds(User theUser, Scanner sc) {
 		
 }
 
-	public static void depositFunds(User theUser, Scanner sc) {
+	public static void depositFunds(User users, Scanner sc) {
+		
 		int toAcct;
 		double amount;
 		double acctBal;
@@ -283,20 +293,21 @@ public static  void withdrawFunds(User theUser, Scanner sc) {
 			do {
 				System.out.println("enter the number (1-2) of the account\n"
 						+ "Account to Deposit : ");
-				toAcct = sc.nextInt()-1;
-				if(toAcct<0 || toAcct>= theUser.numAccounts()) {
-					System.out.println("Invalid account. Please try again. ");
+				toAcct = sc.nextInt();
+				switch(toAcct) {
+				case 1:
+					System.out.println("Enter the amount: ");
+					int bal = sc.nextInt();
+					int balance = users.addBalanceInChecking(bal);
+					break;
+				case 2:
+					System.out.println("Enter the amount: ");
+					int bal1 = sc.nextInt();
+					int balance1 = users.addBalanceinSaving(bal1);
+					break;
 				}
-			}while(toAcct<0 || toAcct>= theUser.numAccounts());
-			acctBal = theUser.getAcctBalance(toAcct);
-					
-			do {
-				System.out.println("Enter the amount to Deposit: ");
-				amount = sc.nextDouble();
-				if(amount <0) {
-					System.out.println("amount must be greater than zero");
-				}
-			}while(amount<0);
+			}while(toAcct<0 || toAcct>= users.numAccounts());
+		
 			
 			sc.nextLine();
 			
@@ -304,7 +315,8 @@ public static  void withdrawFunds(User theUser, Scanner sc) {
 			System.out.println("Enter a Post: ");
 			memo = sc.nextLine();
 			//do the withdrawl
-			theUser.addAcctTransaction(toAcct, amount, memo);	
+			
+//			theUser.addAcctTransaction(toAcct, amount, memo);	
 	
 }	
 	///////////////////////////////// leave here. 
@@ -319,7 +331,7 @@ public static  void withdrawFunds(User theUser, Scanner sc) {
 		User users = null;
 		//employee menu 
 		do {
-			System.out.println("Welcome " + emp.geteFirstName() + ", What would you like to do \n");
+			System.out.println("Welcome " + emp.getFirstName() + ", What would you like to do \n");
 			System.out.println("  1) Reject Account and approve");
 			System.out.println("  2) transfer fund ");
 			System.out.println("  3) view account");

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
 
+import com.bank.dao.EmployeeDao;
 import com.bank.dao.UserDao;
 
 public class Bank {
@@ -13,9 +14,13 @@ public class Bank {
 	private ArrayList<Account> accounts;
 	private ArrayList<Employee> employees;
 	private UserDao uDao;
+	private EmployeeDao eDao;
 	
 	public Bank(UserDao usr) {
 		this.uDao = usr;
+	}
+	public Bank(EmployeeDao emp) {
+		this.eDao = emp;
 	}
 	public Bank(String name) {
 		this.name = name;
@@ -62,18 +67,18 @@ public class Bank {
 		User newUser = new User(firstName, lastName, password);
 		uDao.createUser(newUser);
 		
-		newUser= uDao.getUserByUsername(newUser.getUserName());
+//		newUser= uDao.getUserByUsername(newUser.getUserName());
 		//create a saving account for the user and add to User and Bank accounts lists
-		Account newAccount = new Account("Saving", newUser, this);
-		Account newAccount1 = new Account("checking", newUser, this);
-
-				
-		// add to holder and bank lists
-		newUser.addAccount(newAccount);
-		this.accounts.add(newAccount);
-		newUser.addAccount(newAccount1);
-		this.accounts.add(newAccount1);
-//		
+//		Account newAccount = new Account("Saving", newUser, this);
+//		Account newAccount1 = new Account("checking", newUser, this);
+//
+//				
+//		// add to holder and bank lists
+//		newUser.addAccount(newAccount);
+//		this.accounts.add(newAccount);
+//		newUser.addAccount(newAccount1);
+//		this.accounts.add(newAccount1);
+////		
 		
 		return newUser;
 	}
@@ -112,21 +117,20 @@ public class Bank {
 
 	public Employee addEmployee(String efirstname, String elastname, String epassword) {
 		Employee newUser = new Employee(efirstname, elastname, epassword);
-		this.employees.add(newUser);
+		eDao.createEmployee(newUser);
 		return newUser;
 	}
-	public Employee employeeLogin(String empID, String password) {
-		//search through list of users
-		for(Employee e: this.employees) {
-			//check user ID is correct
-			if(e.getIdNumber().equals(empID)) {
-				if(e.getEpassword().equals(password)) {
+	public Employee employeeLogin(String username, String password) {
+				//check user ID is correct
+		
+		Employee e = eDao.getEmpByUsername(username);
+			if(e.getUserName().equals(username)) {
+				if(e.getPassword().equals(password)) {
 					System.out.println("Welcome ");
 				return e;
 				}else {
 					System.out.println("Invalid credentials");
 				}
-			}
 			System.out.println("you tried logging in that does not exist");
 		}
 		//if we havn't found the user or hava an incorect

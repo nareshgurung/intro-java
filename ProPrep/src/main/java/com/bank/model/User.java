@@ -2,6 +2,7 @@ package com.bank.model;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class User {
@@ -10,6 +11,9 @@ public class User {
 	private String lastName;
 	private String userName;
 	private String password;
+	private String accountID;
+	private String checkingAccount;
+	private String savingAccount;
 //	private Bank theBank;
 	private ArrayList<Account> accounts;
 	
@@ -23,6 +27,8 @@ public class User {
 		this.lastName = lastName;
 		this.password =password;
 		this.userName = firstName + (new Random().nextInt(900)+ 1000);
+		this.checkingAccount = "CH" + (new Random().nextInt(900)+ 1000);
+		this.savingAccount= "CH" + (new Random().nextInt(900)+ 1000);
 		//create empty list of accounts
 		this.accounts = new ArrayList<Account>();
 		}
@@ -32,15 +38,20 @@ public class User {
 		this.lastName = lastName;
 		this.password =password;
 		this.userName = firstName + (new Random().nextInt(900)+ 1000);
+		this.checkingAccount = "CH" + (new Random().nextInt(900)+ 1000);
+		this.savingAccount = "CH" + (new Random().nextInt(900)+ 1000);
 		//create empty list of accounts
 		this.accounts = new ArrayList<Account>();
 		}
 	//user to get user info
-	public User(String firstName, String lastName, String username, String password) {
+	public User(int id, String firstName, String lastName, String username, String password, String cId, String sId) {
+		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.password =password;
 		this.userName = username;
+		this.checkingAccount = cId;
+		this.savingAccount = sId;
 			
 		//create empty list of accounts
 		this.accounts = new ArrayList<Account>();
@@ -112,6 +123,32 @@ public class User {
 	@Override
 	public String toString() {
 		return "New user "+ "id" + id + lastName + ", " + firstName + " with ID- " + userName;
+	}
+
+	public int addBalanceinSaving(int balance) {
+		  int total = 0;
+		  	total += balance;
+		return total;
+	}
+
+	public int addBalanceInChecking(int balance) {
+		int total =0;
+		total += balance;
+		return total;
+	}
+	public void setCheckingAccount(String account) {
+		this.checkingAccount = account;
+	}
+	public String getCheckingAccount() {
+		// TODO Auto-generated method stub
+		return checkingAccount;
+	}
+	public void setSavingAccount(String account) {
+		this.savingAccount = account;
+	}
+	public String getSavingAccount() {
+		// TODO Auto-generated method stub
+		return savingAccount;
 	}
 
 }
