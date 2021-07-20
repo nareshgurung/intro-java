@@ -86,4 +86,10 @@ public class EmployeeDaoDB implements EmployeeDao {
 		
 	}
 
+	public void viewUserAccount(Employee e) {
+		
+		String sql = "SELECT employee.*, account.*, user.firstName, user,last_name, user.saving_account, user.checking_account"
+				+ "FROM users join employee on users.employee_id = employee.employee_id"
+				+ "join account ON user.checking_account_id = account.account_number where users.username =?";
+	}
 }

@@ -11,14 +11,18 @@ public class User {
 	private String lastName;
 	private String userName;
 	private String password;
-	private String accountID;
-	private String checkingAccount;
-	private String savingAccount;
+//	private String accountID;
+	private int checkingAccount;
+	private int savingAccount;
 //	private Bank theBank;
 	private ArrayList<Account> accounts;
+	private ArrayList<User> users;
+	private ArrayList <Employee> emp;
 	
 	public User() {
 		accounts = new ArrayList<Account>();
+		users = new ArrayList<User>();
+		emp = new ArrayList<Employee>();
 	}
 	
 	public User(int id, String firstName, String lastName, String password) {
@@ -27,8 +31,8 @@ public class User {
 		this.lastName = lastName;
 		this.password =password;
 		this.userName = firstName + (new Random().nextInt(900)+ 1000);
-		this.checkingAccount = "CH" + (new Random().nextInt(900)+ 1000);
-		this.savingAccount= "CH" + (new Random().nextInt(900)+ 1000);
+		this.checkingAccount = (new Random().nextInt(900)+ 1000);
+		this.savingAccount= (new Random().nextInt(900)+ 1000);
 		//create empty list of accounts
 		this.accounts = new ArrayList<Account>();
 		}
@@ -38,13 +42,13 @@ public class User {
 		this.lastName = lastName;
 		this.password =password;
 		this.userName = firstName + (new Random().nextInt(900)+ 1000);
-		this.checkingAccount = "CH" + (new Random().nextInt(900)+ 1000);
-		this.savingAccount = "CH" + (new Random().nextInt(900)+ 1000);
+		this.checkingAccount = (new Random().nextInt(900)+ 1000);
+		this.savingAccount = (new Random().nextInt(900)+ 1000);
 		//create empty list of accounts
 		this.accounts = new ArrayList<Account>();
 		}
 	//user to get user info
-	public User(int id, String firstName, String lastName, String username, String password, String cId, String sId) {
+	public User(int id, String firstName, String lastName, String username, String password, int cId, int sId) {
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -91,64 +95,24 @@ public class User {
 	public String getPassword() {
 		return this.password;
 	}
-	
-	public void addAccount(Account anAcct) {
-		this.accounts.add(anAcct);
+	public void setCheckingAccount(int account) {
+		this.checkingAccount = account;
+	}
+	public int getCheckingAccount() {
+		// TODO Auto-generated method stub
+		return checkingAccount;
+	}
+	public void setSavingAccount(int account) {
+		this.savingAccount = account;
+	}
+	public int getSavingAccount() {
+		// TODO Auto-generated method stub
+		return savingAccount;
 	}
 	
-	public void printAccountsSummary() {
-		System.out.println(this.firstName +"'s accounts summary");
-		for(int a =0; a<this.accounts.size(); a++) {
-			System.out.println(a+1+")" +  this.accounts.get(a).getSummaryLine());
-		}
-		System.out.println();
-	}
-	public int numAccounts() {
-		return this.accounts.size();
-	}
-	public void printAcctTransHistory(int acctIdx) {
-		this.accounts.get(acctIdx).printTransHistory();
-	}
-	public double getAcctBalance(int fromAcct) {
-		return this.accounts.get(fromAcct).getBalance();
-	}
-	public String getAcctUUID(int acctIdx) {
-		return this.accounts.get(acctIdx).getUUID();
-	}
-	
-	public void addAcctTransaction(int acctIdx, double amount, String memo) {
-		this.accounts.get(acctIdx).addTransaction(amount, memo);
-	}
-
 	@Override
 	public String toString() {
 		return "New user "+ "id" + id + lastName + ", " + firstName + " with ID- " + userName;
 	}
-
-	public int addBalanceinSaving(int balance) {
-		  int total = 0;
-		  	total += balance;
-		return total;
-	}
-
-	public int addBalanceInChecking(int balance) {
-		int total =0;
-		total += balance;
-		return total;
-	}
-	public void setCheckingAccount(String account) {
-		this.checkingAccount = account;
-	}
-	public String getCheckingAccount() {
-		// TODO Auto-generated method stub
-		return checkingAccount;
-	}
-	public void setSavingAccount(String account) {
-		this.savingAccount = account;
-	}
-	public String getSavingAccount() {
-		// TODO Auto-generated method stub
-		return savingAccount;
-	}
-
+	
 }

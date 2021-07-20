@@ -1,75 +1,92 @@
 package com.bank.model;
 
 import java.util.ArrayList;
+import java.util.Random;
 
-public class Account {
+public class Account{
 	private int id;
-	private String acountID;
-	private User holderUserName;
-	private int checkingAccount;
-	private int savingAccount;
-	private ArrayList<Transaction> transactions;
-
-	
-
+	private int accountID;
+	private int balance;
+	private ArrayList<User>users;
+	private ArrayList<Account> accounts;
+	private ArrayList<Employee> employees;
 	public Account() {
-		super();
-		// TODO Auto-generated constructor stub
+		users = new ArrayList<User>();
+		employees = new ArrayList<Employee>();
+		accounts = new ArrayList<Account>();
 	}
-
-
-	public Account(User holderUserName, Bank theBank) {
-		super();
-		
-		//set the account name and holder
-		this.holderUserName = holderUserName;
-		
-		//get new account number
-		this.acountID = theBank.getNewAccountUUID();
-		
-		//init transactions
-		this.transactions = new ArrayList<Transaction>();
-		
+	//initialization
+	public Account(int accountId) {
+		////.id = id;
+		this.accountID = accountId;
+		this.balance = balance;
+		this.accounts = new ArrayList<Account>();
 	}
-
-
-	public String getUUID() {
-		return this.acountID;
-	}	
-	
-	public String getSummaryLine() {
-		
-		//get the account's balance
-		double balance = this.getBalance();
-		
-		//format the summary line, depending on the whether the balance is negative
-		if(balance >=0) {
-			return String.format("%s : $%.02f : %s", this.acountID, balance, this.name);
-		}else {
-			return String.format("%s : $(%.02f) : %s", this.acountID, balance, this.name);
-		}
+	//push to base
+	public Account(int balance, int accountID) {
+		this.balance = balance;
+		this.accountID = accountID;
+		this.accounts = new ArrayList<Account>();
 	}
-	
-	public double getBalance() {
-		double balance = 0;
-		for(Transaction t : this.transactions) {
-			balance +=t.getAmount();
-		}
+	public Account(int id, int accountID, int balance) {
+		this.id = id;
+		this.accountID = accountID;
+		this.balance = balance;
+		this.accounts = new ArrayList<Account>();
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public int getAccountID() {
+		return accountID;
+	}
+	public void setAccountID(int accountID) {
+		this.accountID = accountID;
+	}
+	public int getBalance() {
 		return balance;
 	}
-	public void printTransHistory() {
-		
-		System.out.println("\nTransaction history for accounts %s\n" + this.acountID);
-		for(int t = this.transactions.size()-1; t<=0; t--) {
-			System.out.print(this.transactions.get(t));
-//					.getSummaryLine());
-		}
-		System.out.println();
+	public void setBalance(int balance) {
+		this.balance = balance;
 	}
-	public void addTransaction(double amount, String memo) {
-		// create new transaction object and add it to our list
-		Transaction newTrans = new Transaction(amount, memo, this);
-		this.transactions.add(newTrans);
+	public ArrayList<User> getUsers() {
+		return users;
+	}
+	public void setUsers(ArrayList<User> users) {
+		this.users = users;
+	}
+	public ArrayList<Account> getAccounts() {
+		return accounts;
+	}
+	public void setAccounts(ArrayList<Account> accounts) {
+		this.accounts = accounts;
+	}
+	public ArrayList<Employee> getEmployees() {
+		return employees;
+	}
+	public void setEmployees(ArrayList<Employee> employees) {
+		this.employees = employees;
 	}
 	
+	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

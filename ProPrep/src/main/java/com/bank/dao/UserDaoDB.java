@@ -55,8 +55,8 @@ public class UserDaoDB implements UserDao {
 				user.setLastName(rs.getString(3));
 				user.setUserName(rs.getString(4));
 				user.setPassword(rs.getString(5));
-				user.setCheckingAccount(rs.getString(6));
-				user.setSavingAccount(rs.getString(7));
+				user.setCheckingAccount(rs.getInt(6));
+				user.setSavingAccount(rs.getInt(7));
 			}
 			return user;
 		}catch(SQLException e) {
@@ -77,8 +77,8 @@ public class UserDaoDB implements UserDao {
 			ps.setString(2, u.getLastName());
 			ps.setString(3, u.getUserName());
 			ps.setString(4,  u.getPassword());
-			ps.setString(5, u.getCheckingAccount());
-			ps.setString(6, u.getSavingAccount());
+			ps.setInt(5, u.getCheckingAccount());
+			ps.setInt(6, u.getSavingAccount());
 			
 			ps.execute();
 		}catch(SQLException e) {
@@ -89,13 +89,46 @@ public class UserDaoDB implements UserDao {
 
 	@Override
 	public void updateUser(User u) {
-		// TODO Auto-generated method stub
+	try {
+		Connection con = conUtil.getConnection();
+		String sql = "UPDATE users SET first_name =?, last_name =?, password=?, ch_account_id =?, sv_account_id=?"
+				+ " WHERE users.id =?";
+		
+		PreparedStatement ps = con.prepareStatement(sql);
+		ps.setString(1, u.getFirstName());
+		ps.setString(2, u.getLastName());
+		ps.setString(3, u.getUserName());
+		ps.setString(4, u.getPassword());
+		ps.setString(4, u.getCheckingAccount());
+		ps.setString(4, u.getSavingAccount());
+		
+		ps.execute();
+		
+	}catch(SQLException e) {
+		e.printStackTrace();
+	}
 		
 	}
 
 	@Override
 	public void deleteUser(User u) {
-		// TODO Auto-generated method stub
+		try {
+			
+			Connection con = conUtil.getConnection();
+			String sql = "DELETE FROM users WHERE users.first_name = ? AND users.last_name = ? AND users.username = ?";
+			PreparedStatement ps = con.prepareStatement(sql);
+			
+			ps.setInt(1, u.getId());
+			ps.setString(2, u.getFirstName());
+			ps.setString(3, u.getLastName());
+			ps.setString(4, u.getUserName());
+			
+			ps.execute();
+			
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		
 		
 	}
 }
