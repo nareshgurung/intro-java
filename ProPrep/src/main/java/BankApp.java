@@ -28,16 +28,7 @@ public class BankApp {
 public static void main(String[] args) {
 	
 	Scanner sc = new Scanner(System.in);
-	////////////////////////////////////////////////////
 	
-	////////////////////////////////////////////////////
-	//init Bank
-//	System.out.println(u.getAllUsers());
-//	System.out.println(u.getUserByUsername("david243"));
-//System.out.println(theBank.addUser("naresh", "gurung", "password"));
-//	System.out.println(theBank.userLogin("david243", "password"));
-	// add a user, which also creates a saving account
-//	User aUser = theBank.addUser("john", "white", "1234");
 	User curUser = null;
 	Employee employee = null;
 	Account account = null;
@@ -45,31 +36,28 @@ public static void main(String[] args) {
 		System.out.println("Please tell us Who are you (Customer/Employee): ");
 		String differ = sc.nextLine();
 		if(differ.equalsIgnoreCase("customer")) {
-		//stay in the login prompt until successful login
-		curUser = mainMenuPrompt(curUser, sc);
-		//stay in main menu until user quits
-		//printUserMenu(curUser, theBanking, sc);
-		/////////////////////////////////////////////////////////
-		System.out.println("checking Account no:" + curUser.getCheckingAccount());
-		System.out.println("saving Account no:" + curUser.getSavingAccount());
-		int choice;
+			//stay in the login prompt until successful login
+			curUser = mainMenuPrompt(curUser, sc);
+			//stay in main menu until user quits
+			//printUserMenu(curUser, theBanking, sc);
+			System.out.println("checking Account no:" + curUser.getCheckingAccount());
+			System.out.println("saving Account no:" + curUser.getSavingAccount());
+			int choice;
 		//user menu 
 		do {
 			System.out.println("Welcome " + curUser.getFirstName() + ", What would you like to do \n");
 			System.out.println("  1)deposit ");
 			System.out.println("  2) withdrawl");
-			System.out.println("  3) Show account transaction history");
+			System.out.println("  3) view account info");
 			System.out.println("  4) Transfer");
 			System.out.println("  5) Quit");
 			System.out.println();
 			System.out.println("enter choice: ");
 			choice = sc.nextInt();
 			
-			if(choice<1 || choice>5) {
-				System.out.println("Invalie choice. plase choose 1-5");
+			if(choice<1 || choice>6) {
+				System.out.println("Invalid choice. plase choose 1-5");
 			}
-			
-		}while(choice<1 || choice>5);
 		switch(choice) {
 		case 1:
 			BankApp.deposit(account, sc);
@@ -77,25 +65,23 @@ public static void main(String[] args) {
 		case 2:
 			BankApp.withdrawFunds(account, sc);
 			break;
-		case 4:
-			BankApp.transferFunds(account, sc);
-			break;
 		case 3:
 			BankApp.viewAccount(account, sc);
 			break;
-//		}
-//		//redisplay this menu unless the user wants to quit
-//		if(choice != 5) {
-//			BankApp.printUserMenu(theUser, theBank, sc);
-			
-//		}else {
-//			System.out.print("Thank you for being a valued Customer.");
-//			System.exit(1);
+		case 4:
+			BankApp.transferFunds(account, sc);
+			break;
+		case 5:
+			if(choice != 5 ) {
+				mainMenuPrompt(curUser, sc);
+			}
+			System.out.print("Thank you for being a valued Customer.");
+			System.exit(1);
+			}
+		}while(choice<1 || choice>6);
 		}
 		
-		/////////////////////////////////////////////////////////////
-		///////////////////////////////////////
-	}else if(differ.equalsIgnoreCase("employee")) {
+else if(differ.equalsIgnoreCase("employee")) {
 		System.out.println("press 1 for sign up, 2 for login");
 		int choice = sc.nextInt();
 		switch(choice) {
@@ -116,8 +102,8 @@ public static void main(String[] args) {
 			}
 			break;
 		case 2:
-			System.out.println("Please enter your employee username: ");
 			sc.nextLine();
+			System.out.println("Please enter your employee username: ");
 			String eId = sc.nextLine();
 			System.out.println("Please enter your password: ");
 			String ePass = sc.nextLine();
@@ -130,7 +116,6 @@ public static void main(String[] args) {
 	}
 	
   }
-		
 }
 public static void deposit(Account acct, Scanner sc) {
 	Account account = null;
@@ -154,6 +139,8 @@ public static void viewAccount(Account accounts, Scanner sc) {
 		int aNumber = sc.nextInt();
 		try {
 			act = aServ.viewAccount(aNumber);
+			System.out.println();
+			System.out.println(act);
 		}catch(Exception e) {
 			System.out.println("invalid accountNumber");
 			e.printStackTrace();
@@ -251,14 +238,15 @@ public static User mainMenuPrompt(User users, Scanner sc) {
 		do {
 			System.out.println("Welcome " + emp.getFirstName() + ", What would you like to do \n");
 			System.out.println("  1) Reject Account and approve user's account");
-			System.out.println("  2) transfer fund user's fund");
-			System.out.println("  3) view account user's account");
-			System.out.println("  4) Quit");
+			System.out.println("  2) Transfer fund user's fund");
+			System.out.println("  3) View account user's account");
+			System.out.println(" 4) DeleteUserAccount");
+			System.out.println("  5) Quit");
 			System.out.println();
 			System.out.println("enter choice: ");
 			choice = sc.nextInt();
 			
-			if(choice<1 || choice>5) {
+			if(choice<1 || choice>6) {
 				System.out.println("Invalid choice. plase choose 1-5");
 			}
 			
@@ -268,49 +256,83 @@ public static User mainMenuPrompt(User users, Scanner sc) {
 				BankApp.rijectAcctandApprove();
 				break;
 			case 2:
-				BankApp.transferFund();
+				BankApp.transferFund(emp, sc);
 				break;
-//			case 3:
-//				BankApp.viewAccount();
-//				break;
+			case 3:
+				BankApp.viewAccountDetails(emp, sc);
+				break;
+			case 4:
+				BankApp.deleteUserAccount(sc);
+				break;
+			
 			}
 		
-		}while(choice<1 || choice>5);
-			//redisplay this menu unless the user wants to quit
-	/*	if(choice != 4) {
+		}while(choice<1 || choice>6);
+//			//redisplay this menu unless the user wants to quit
+	if(choice != 5) {
 			BankApp.printEmployeeMenu(emp,  sc);
-			
+//			
 		}else {
 			System.out.print("Thank you for being a valued Customer.");
 			System.exit(1);
-		}*/
+		}
+	}
+	public static void deleteUserAccount(Scanner sc) {
+		User users;
+		Account acc = null;
+		sc.nextLine();
+		System.out.println("Enter the first name: ");
+		String fname = sc.nextLine();
+		System.out.println("Enter the User's lastname: ");
+		String lname = sc.nextLine();
+		System.out.println("Enter the account username ");
+		String uname = sc.nextLine();
+		try {
+			users = uServ.deleteUser(fname, lname, uname);
+			
+		}catch(Exception e){
+			System.out.println("You hava a balance on you account");
+		}
+			
+	}
+	public static void viewAccountDetails(Employee emp, Scanner sc){
+		User users = null;
+		Employee en;
+		sc.nextLine();
+		System.out.println("Please Enter the users user's name: ");
+		String name = sc.nextLine();
+		try {
+			en = eServ.vieUserAccount(name);
+			System.out.println(en);
+//			System.out.println("checking Account no:" + users.getCheckingAccount());
+//			System.out.println("saving Account no:" + users.getSavingAccount());
+		}catch(Exception e) {
+			System.out.println("Invalid username: ");
+		}
 	}
 	public static void rijectAcctandApprove() {
 
 		Scanner sc=new Scanner(System.in);
 //		//Employee empusr;
-//				User usr;
+		User usr;
 				Account acc;
-		System.out.println("Enter your SSN: ");
-//		int ssn[8] = sc.nextInt();
-//		if(ssn == ssn [8])
-//		{
-//			System.out.print("Enter userid ");
-//			int id=sc.nextInt();
-//			System.out.println("Enter the user's firstname: ");
-//			String first = sc.nextLine();
-//			System.out.println("Enter the user's lastName: "); 
-//			String last =sc.nextLine(); 
-//			System.out.println("Enter the user's username:"); 
-//			String user = sc.nextLine();
-//			System.out.println("Enter the user's password:"); 
-//			String pwd = sc.nextLine();
+		System.out.println("Do you have your SSN: ");
+		String ssn= sc.nextLine();
+		if(ssn.equalsIgnoreCase("yes"))
+		{
+			System.out.println("Enter the user's firstname: ");
+			String first = sc.nextLine();
+			System.out.println("Enter the user's lastName: "); 
+			String last =sc.nextLine(); 
+			System.out.println("Enter the user's username:"); 
+			String user = sc.nextLine();
+			System.out.println("Enter the user's password:"); 
+			String pwd = sc.nextLine();
 		
-//			usr=new User(id,first,last,pwd);
-//			acc=new Account(id);
-//		}
-//		else
-//			System.out.println("Account Creation Rejected as no SSN! ");
+			usr=uServ.addUser(first,last,pwd);
+		}
+		else
+			System.out.println("Account Creation Rejected as no SSN! ");
 //
 //				
 //					usr = eServ.deleteUser(first, last, user);
@@ -319,10 +341,9 @@ public static User mainMenuPrompt(User users, Scanner sc) {
 	}
 
 	
-private static void transferFund() {
+private static void transferFund(Employee emp, Scanner sc) {
 		// TODO Auto-generated method stub
-	
-	Scanner sc=new Scanner(System.in);
+
 	Account accounts;
 	System.out.print("Enter user's Account Number to transfer from: ");
 	int act=sc.nextInt();

@@ -11,9 +11,10 @@ public class Account{
 	private ArrayList<Account> accounts;
 	private ArrayList<Employee> employees;
 	public Account() {
-		users = new ArrayList<User>();
-		employees = new ArrayList<Employee>();
-		accounts = new ArrayList<Account>();
+		super();
+//		users = new ArrayList<User>();
+//		employees = new ArrayList<Employee>();
+//		accounts = new ArrayList<Account>();
 	}
 	//initialization
 	public Account(int accountId) {
@@ -69,6 +70,10 @@ public class Account{
 	}
 	public void setEmployees(ArrayList<Employee> employees) {
 		this.employees = employees;
+	}
+	@Override
+	public String toString() {
+		return "Your total Balance: $" + balance;
 	}
 	
 	

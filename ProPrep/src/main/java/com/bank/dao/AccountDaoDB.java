@@ -38,28 +38,24 @@ public class AccountDaoDB implements AccountDao {
 	}
 
 	@Override
-	public Account getAccountbyUserName(int account_id) {
+	public Account vewAccount(int account_id) {
 		
 		Account acct = new Account();
 		try {
 		Connection con = conUtil.getConnection();
-		String sql = "SELECT * FROM accounts WHERE accounts.account_number = '" +account_id+"'";
+		String sql = "SELECT SUM(balance) FROM accounts where account_number =" +account_id;
 		
 		Statement s = con.createStatement();
-		ResultSet rs = s.executeQuery(sql);
-		
+		ResultSet rs = s.executeQuery(sql);	
 		while(rs.next()) {
-			acct.setId(rs.getInt(1));
-			acct.setAccountID(rs.getInt(2));
-			acct.setBalance(rs.getInt(3));
+			acct.setBalance(rs.getInt(1));
 		}
 		return acct;
-		
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return null;
+		return acct;
 	}
 	public void addAmount(Account e) {
 		try {
@@ -109,25 +105,24 @@ public class AccountDaoDB implements AccountDao {
 			e1.printStackTrace();
 		}
 	}
-	public void viewAccount(Account a) {
+
+	@Override
+	public void deleteUserAccount(Account a) {
 		
 		try {
 			Connection con = conUtil.getConnection();
-			String sql = "SELECT * FROM accounts WHERE account_number = ?";
-			
+			String sql = "DELETE FROM accounts WHERE accounts.account_number = ?";
 			PreparedStatement ps = con.prepareStatement(sql);
-			ps.setInt(1, a.getAccountID());
-			ps.setInt(2,  a.getBalance());
+			
+			ps.setInt(1, a.getId());
+			ps.setInt(2, a.getAccountID());
+			ps.setInt(3, a.getBalance());
+			
 			ps.execute();
-		}catch(SQLException e) {
+			
+		} catch(SQLException e) {
 			e.printStackTrace();
 		}
-	}
-
-	@Override
-	public void deleteUserAccount(Employee u) {
-		// TODO Auto-generated method stub
-		
 	}
 
 

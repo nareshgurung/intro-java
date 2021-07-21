@@ -1,5 +1,6 @@
 package com.bank.dao;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -64,27 +65,50 @@ public class UserDaoDB implements UserDao {
 		}
 		return null;
 	}
-	//Prepared Statements
+	
 	@Override
 	public void createUser(User u) {
 		
+		//callable statement
 		try {
 			Connection con = conUtil.getConnection();
-			String sql = "INSERT INTO users(first_name, last_name, username, password, ch_account_id, sv_account_id) values"
-					+ "(?,?,?,?,?,?)";
-			PreparedStatement ps = con.prepareStatement(sql);
-			ps.setString(1, u.getFirstName());
-			ps.setString(2, u.getLastName());
-			ps.setString(3, u.getUserName());
-			ps.setString(4,  u.getPassword());
-			ps.setInt(5, u.getCheckingAccount());
-			ps.setInt(6, u.getSavingAccount());
+			//To use our functions/procedure we need to turn off autocommit
+			con.setAutoCommit(false);
+			String sql = "call create_post(?,?,?,?,?,?)";
+			CallableStatement cp = con.prepareCall(sql);
 			
-			ps.execute();
-		}catch(SQLException e) {
+			cp.setString(1, u.getFirstName());
+			cp.setString(2, u.getLastName());
+			cp.setString(3, u.getUserName());
+			cp.setString(4,  u.getPassword());
+			cp.setInt(5, u.getCheckingAccount());
+			cp.setInt(6, u.getSavingAccount());
+			cp.execute();
+			
+			con.setAutoCommit(true);
+			
+		} catch(SQLException e) {
 			e.printStackTrace();
 		}
 		
+		//Prepared Statements
+//		try {
+//			Connection con = conUtil.getConnection();
+//			String sql = "INSERT INTO users(first_name, last_name, username, password, ch_account_id, sv_account_id) values"
+//					+ "(?,?,?,?,?,?)";
+//			PreparedStatement ps = con.prepareStatement(sql);
+//			ps.setString(1, u.getFirstName());
+//			ps.setString(2, u.getLastName());
+//			ps.setString(3, u.getUserName());
+//			ps.setString(4,  u.getPassword());
+//			ps.setInt(5, u.getCheckingAccount());
+//			ps.setInt(6, u.getSavingAccount());
+//			
+//			ps.execute();
+//		}catch(SQLException e) {
+//			e.printStackTrace();
+//		}
+//		
 	}
 
 	@Override
@@ -99,8 +123,8 @@ public class UserDaoDB implements UserDao {
 		ps.setString(2, u.getLastName());
 		ps.setString(3, u.getUserName());
 		ps.setString(4, u.getPassword());
-		ps.setString(4, u.getCheckingAccount());
-		ps.setString(4, u.getSavingAccount());
+		ps.setInt(4, u.getCheckingAccount());
+		ps.setInt(4, u.getSavingAccount());
 		
 		ps.execute();
 		

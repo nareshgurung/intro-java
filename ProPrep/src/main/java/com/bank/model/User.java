@@ -11,10 +11,8 @@ public class User {
 	private String lastName;
 	private String userName;
 	private String password;
-//	private String accountID;
 	private int checkingAccount;
 	private int savingAccount;
-//	private Bank theBank;
 	private ArrayList<Account> accounts;
 	private ArrayList<User> users;
 	private ArrayList <Employee> emp;
@@ -112,7 +110,7 @@ public class User {
 	
 	@Override
 	public String toString() {
-		return "New user "+ "id" + id + lastName + ", " + firstName + " with ID- " + userName;
+		return "User: "+ "id " + id + firstName + ", " + lastName + " with ID- " + userName;
 	}
 	
 }

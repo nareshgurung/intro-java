@@ -18,4 +18,6 @@ public interface EmployeeDao {
 	void deleteUserAccount(Employee u);
 
 	public void createEmployee(Employee u);
+	
+	public Employee viewUserAccount(String user);
 }

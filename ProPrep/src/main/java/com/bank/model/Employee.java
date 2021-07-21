@@ -14,6 +14,9 @@ public class Employee {
 	public Employee() {
 		users = new ArrayList<User>();
 	}
+	public Employee(String userName) {
+		this.userName = userName;
+	}
 
 	public Employee(int id, String eName, String eLastName, String epassword ) {
 		super();

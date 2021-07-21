@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
+import com.bank.model.Account;
 import com.bank.model.Employee;
 import com.bank.model.User;
 import com.bank.util.ConnectionUtil;
@@ -86,10 +87,52 @@ public class EmployeeDaoDB implements EmployeeDao {
 		
 	}
 
-	public void viewUserAccount(Employee e) {
+	public Employee viewUserAccount(String username) {
+			Employee emp = new Employee();
+			User usr = new User();
+			Account acct = new Account();
+			
+		try {
+			Connection con = conUtil.getConnection();
+					
+					String sql = "SELECT accounts.*, users.first_name, users.last_name, users.username, users.ch_account_id, "
+							+ "users.sv_account_id FROM users join accounts ON users.ch_account_id "
+							+ "= accounts.account_number where users.username = "+ username; ;
 		
-		String sql = "SELECT employee.*, account.*, user.firstName, user,last_name, user.saving_account, user.checking_account"
-				+ "FROM users join employee on users.employee_id = employee.employee_id"
-				+ "join account ON user.checking_account_id = account.account_number where users.username =?";
-	}
+					Statement s = con.createStatement();
+					ResultSet rs = s.executeQuery(sql);
+					
+					while(rs.next()) {
+						acct.setId(rs.getInt(1));
+						acct.setAccountID(rs.getInt(2));
+						acct.setBalance(rs.getInt(3));
+						usr.setFirstName(rs.getString(6));
+						usr.setLastName(rs.getString(7));
+						usr.setUserName(rs.getString(8));
+						usr.setCheckingAccount(rs.getInt(10));
+						usr.setSavingAccount(rs.getInt(11));
+						
+					}
+					return emp;
+		}catch(SQLException e1) {
+				e1.printStackTrace();
+			}
+		return null;
 }
+}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

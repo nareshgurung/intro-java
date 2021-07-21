@@ -11,17 +11,26 @@ public interface AccountDao {
 	public List<Account> getAllAccount();
 	
 	
-	public Account getAccountbyUserName(int account_id);
+//	public Account getAccountbyUserName(int account_id);
 	
 	public void depostUserAmount(Account e);
 	
-	void deleteUserAccount(Employee u);
+//	void deleteUserAccount(Employee u);
 
 	public void withdrawUserAmount(Account u);
 	
-	public void viewAccount(Account a);
+//	public void viewAccount(Account a);
 
 
 	public void addAmount(Account add);
+
+
+	Account vewAccount(int account_id);
+
+
+//	Account deleteUserAccount(int amount);
+
+
+	void deleteUserAccount(Account a);
 
 }

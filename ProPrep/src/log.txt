@@ -1,0 +1,6 @@
+2021-07-20 21:15:24 WARN  LoggingBankAct:14 - something bad potentnially could be happening
+2021-07-20 21:15:24 ERROR LoggingBankAct:15 - something went wrong
+2021-07-20 21:15:24 FATAL LoggingBankAct:16 - Something extremly wrong happened
+2021-07-20 21:16:52 WARN  LoggingBankAct:14 - something bad potentnially could be happening
+2021-07-20 21:16:52 ERROR LoggingBankAct:15 - something went wrong
+2021-07-20 21:16:52 FATAL LoggingBankAct:16 - Something extremly wrong happened
