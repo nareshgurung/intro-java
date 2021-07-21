@@ -21,86 +21,17 @@ public class SocialHubDriver {
 //	private static PostService pServ = new PostService("posts.txt");
 //	private static AccountService aServ = new AccountService("acct.txt");
 //	
-	private User uDao = new UserDaoDb();
-	private PostDao pDao = new PostDaoDB();
-	private static UserService uServ = new UserService();
+	private static UserDao uDao = new UserDaoDB();
+	private static PostDao pDao = new PostDaoDB();
+	private static UserService uServ = new UserService(uDao);
+	private static PostService pServ = new PostService(pDao);
 	public static void main(String[] args) {
 		
-		Scanner in = new Scanner(System.in);
-		
-		System.out.println(rick);
-		pServ.addPost(rick.getId(), rick.getId(),"Morty and I just on a sick adventure");
-		
-		List<PostDisplay> pList = pServ.getAllPosts();
-		
-		for(int i= 0; i<pList.size(); i++) {
-			System.out.println(pList.get(i).getUsername());
-			System.out.println(pList.get(i).getContent());
-			System.out.println();
-		}
-		rick = pServ.loadUserPosts(rick);
-		
-		System.out.println(rick);
-//		System.out.println(pServ.getAllPosts());
-		
-//	while(true) { // not working, just taking a test
-//		int count = 1;
-//		String email = "rick" + count + "email.com";
-//		uServ.signUp("Rick", "Sanchez", email, "password");
-//		count++;
-//	}
-//   
-	}
-}
-/* 7/15 4.10
-		System.out.println(uDao.getAllUsers());
-		
-		System.out.println(uDao.getUserByUsername("larryking8345"));
-		
-		
-		User u = uDao.getUserByUsername("RickSanchez4882");
-		
-		uDao.deleteUser(u);
-		
-		System.out.println(uDao.getAllUsers());
-		
-		PostDao pDao = new PostDaoDB();
-		
-		Post p = new Post(1, 1, "Hello to myself");
-		
-		pDao.createPost(p);
-		
-		System.out.println(pDao.getAllPosts());
-		
-		u = uDao.getUserByUsername("haydenfields3841");
-		
-		u = pDao.getUsersPosts(u);
-		
-		System.out.println(u);
-		
-		List<Post> postList = u.getPosts();
-		
-		for(int i=0; i<postList.size(); i++) {
-			System.out.println(postList.get(i).getPostContent());
-		}
-		
-//		Scanner sc = new Scanner(System.in);
-//		UserDao uDao = new UserDaoDB();
-//		System.out.println(uDao.getAllUsers());
-//		System.out.println(uDao.getUserByUsername("larryking8345"));
-//		
-//		User u = new User("Rick", "Sanchez", "Rick@rickmail.com", "ilovemorty");
-//		uDao.createUser(u);
-//		System.out.println(uDao.getAllUsers());
-//		
-		
-	}
-}
-		
+		Scanner sc = new Scanner(System.in);
+	
 		
 
 		//This will be used to control our loop
-		/*
 	User u = null;
 	Accounts a = null;
 	boolean done = false;
@@ -114,7 +45,7 @@ public class SocialHubDriver {
 					System.out.print("Please enter your password: ");
 					String password = sc.nextLine();
 					try {
-						u = uServ.login(username, password);
+						u = uServ.signIn(username, password);
 						System.out.println("Welcome " + u.getFirstName());
 					} catch(Exception e) {
 						System.out.println("Username or password was incorect. Goodbye");
@@ -126,12 +57,14 @@ public class SocialHubDriver {
 					String first = sc.nextLine();
 					System.out.println("Please enter your last name: ");
 					String last = sc.nextLine();
+					System.out.println("please enter the email: ");
+					String email = sc.nextLine();
 					System.out.println("Please enter a password: ");
 					String password = sc.nextLine();
 					
 					try {
-						u = uServ.signUp(first, last, password);
-						System.out.println("You may now log in with the username: " + u.getUserName());
+						u = uServ.signUp(first, last, email, password);
+						System.out.println("You may now log in with the username: " + u.getUsername());
 					} catch (Exception e) {
 						System.out.println("Sorry, we could not process your request");
 						System.out.println("Please try again later");
@@ -146,9 +79,9 @@ public class SocialHubDriver {
 				int choice = Integer.parseInt(sc.nextLine());
 				//If the user chooses 1, we will show them the list of posts
 				if(choice == 1) {
-					List<Post> posts = pServ.getAllPosts();
-					for(Post post: posts) {
-						System.out.println(post.getUser() + ":");
+					List<PostDisplay> posts = pServ.getAllPosts();
+					for(PostDisplay post: posts) {
+						System.out.println(post.getUsername() + ":");
 						System.out.println(post.getContent());
 						System.out.println();
 					}
@@ -159,33 +92,32 @@ public class SocialHubDriver {
 				} else if(choice == 2) {
 					System.out.println("Please enter your content below:");
 					String content = sc.nextLine();
-					Post p = new Post(u.getUserName(), content);
-					pServ.addPost(p);
+					pServ.addPost(u.getId(), u.getId(), content);
 					System.out.println("Post was received, are you finished? Press 1 for yes, press 6 for no");
 					choice = Integer.parseInt(sc.nextLine());
 					done = (choice == 2) ? true : false;
 					
-				}else if(choice == 3) {
-					List<Accounts> accounts = aServ.getAllBalance();
-					for(Accounts account: accounts) {
-						System.out.println(account.getBalance() + ":");
-						System.out.println(account.getAccountNumber());
-//						System.out.println(account.getHolder());
-						System.out.println();
-					}
-					System.out.println("Are you finished? Press 1 for yes, press 6 for no");
-					choice = Integer.parseInt(sc.nextLine());
-					done = (choice == 3) ? true : false;
-					
-				}else if(choice == 4) {
-					System.out.println("Please enter your amount:");
-					int amount = Integer.parseInt(sc.nextLine());
-					Accounts acct = new Accounts(u.getUserName(), amount);
-					aServ.addBalance(acct);
-				
-					System.out.println("Post was received, are you finished? Press 1 for yes, press 6 for no");
-					choice = Integer.parseInt(sc.nextLine());
-					done = (choice == 4) ? true : false;
+//				}else if(choice == 3) {
+//					List<Accounts> accounts = uServ.getAllBalance();
+//					for(Accounts account: accounts) {
+//						System.out.println(account.getBalance() + ":");
+//						System.out.println(account.getAccountNumber());
+////						System.out.println(account.getHolder());
+//						System.out.println();
+//					}
+//					System.out.println("Are you finished? Press 1 for yes, press 6 for no");
+//					choice = Integer.parseInt(sc.nextLine());
+//					done = (choice == 3) ? true : false;
+//					
+//				}else if(choice == 4) {
+//					System.out.println("Please enter your amount:");
+//					int amount = Integer.parseInt(sc.nextLine());
+//					Accounts acct = new Accounts(u.getUserName(), amount);
+//					aServ.addBalance(acct);
+//				
+//					System.out.println("Post was received, are you finished? Press 1 for yes, press 6 for no");
+//					choice = Integer.parseInt(sc.nextLine());
+//					done = (choice == 4) ? true : false;
 			}
 		}
 		
@@ -241,4 +173,3 @@ public class SocialHubDriver {
 //			System.exit(1);
 //		}
 //		}
-		*/

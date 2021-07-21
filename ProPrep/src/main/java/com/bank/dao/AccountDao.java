@@ -12,6 +12,7 @@ public interface AccountDao {
 	public User getUserAccount();
 
 	void addAccount(Account acct);
+	List<Account> getAllAccount(String username);
 	
 	
 }

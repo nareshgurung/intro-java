@@ -22,3 +22,4 @@
 2021-07-15 22:42:16 INFO  Logging:51 - User was logged in.
 2021-07-15 22:42:46 INFO  Logging:51 - User was logged in.
 2021-07-15 22:43:02 INFO  Logging:51 - User was logged in.
+2021-07-17 15:48:53 INFO  Logging:36 - New user has registered
