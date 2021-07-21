@@ -35,6 +35,7 @@ public class EmployeeService {
 				//check user ID is correct
 		
 		Employee e = eDao.getEmpByUsername(username);
+//		System.out.println(e);
 			if(e.getUserName().equals(username)) {
 				if(e.getPassword().equals(password)) {
 					System.out.println("Welcome "+ e.getFirstName());

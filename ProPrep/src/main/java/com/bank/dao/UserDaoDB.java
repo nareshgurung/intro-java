@@ -90,25 +90,6 @@ public class UserDaoDB implements UserDao {
 		} catch(SQLException e) {
 			e.printStackTrace();
 		}
-		
-		//Prepared Statements
-//		try {
-//			Connection con = conUtil.getConnection();
-//			String sql = "INSERT INTO users(first_name, last_name, username, password, ch_account_id, sv_account_id) values"
-//					+ "(?,?,?,?,?,?)";
-//			PreparedStatement ps = con.prepareStatement(sql);
-//			ps.setString(1, u.getFirstName());
-//			ps.setString(2, u.getLastName());
-//			ps.setString(3, u.getUserName());
-//			ps.setString(4,  u.getPassword());
-//			ps.setInt(5, u.getCheckingAccount());
-//			ps.setInt(6, u.getSavingAccount());
-//			
-//			ps.execute();
-//		}catch(SQLException e) {
-//			e.printStackTrace();
-//		}
-//		
 	}
 
 	@Override
@@ -139,13 +120,13 @@ public class UserDaoDB implements UserDao {
 		try {
 			
 			Connection con = conUtil.getConnection();
-			String sql = "DELETE FROM users WHERE users.first_name = ? AND users.last_name = ? AND users.username = ?";
+			String sql = "DELETE FROM users WHERE users.first_name =? AND users.last_name =? AND users.username =?";
 			PreparedStatement ps = con.prepareStatement(sql);
 			
-			ps.setInt(1, u.getId());
-			ps.setString(2, u.getFirstName());
-			ps.setString(3, u.getLastName());
-			ps.setString(4, u.getUserName());
+//			ps.setInt(1, u.getId());
+			ps.setString(1, u.getFirstName());
+			ps.setString(2, u.getLastName());
+			ps.setString(3, u.getUserName());
 			
 			ps.execute();
 			

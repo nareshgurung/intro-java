@@ -22,7 +22,7 @@ public class AccountService {
 		this.aDao = aDao;
 	}
 	
-	public Account addDeposit(int accountID, int balance) throws InvalidCredentialsException  {
+	public Account addBalance(int accountID, int balance) throws InvalidCredentialsException  {
 		Account add = new Account(accountID, balance);
 		if(balance>=0) {
 			aDao.depostUserAmount(add);
@@ -70,6 +70,19 @@ public class AccountService {
 	public Account deletAccount(int unumber)throws InvalidCredentialsException {
 		Account num = new Account(unumber);
 		return null;
+	}
+
+	public Account initDeposit(int initId, int initAmount) {
+		Account add = new Account(initId, initAmount);
+		if(initAmount>=0) {
+			aDao.addAmount(add);
+			System.out.println( "Your amount $" + initAmount + " has been deposit");
+			LoggingBankAct.logger.info("User deposit the amount");
+			return add;
+		}else {
+			System.out.println("Invallid deposit");
+			throw new InvalidAmountException();
+		}
 	}
 	
 }

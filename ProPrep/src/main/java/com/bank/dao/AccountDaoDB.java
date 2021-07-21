@@ -10,6 +10,7 @@ import java.util.List;
 
 import com.bank.model.Account;
 import com.bank.model.Employee;
+import com.bank.model.User;
 import com.bank.util.ConnectionUtil;
 
 public class AccountDaoDB implements AccountDao {
@@ -32,6 +33,30 @@ public class AccountDaoDB implements AccountDao {
 			}
 			return aList;
 			}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	@Override
+	public Account getAccountByAccoiuntId(int accountId) {
+		Account acct = new Account();
+		
+		try {
+			Connection con = conUtil.getConnection();
+			
+			String sql = "SELECT * FROM accounts WHERE  accounts.account_number = '" + accountId + "'";
+			
+			Statement s = con.createStatement();
+			ResultSet rs = s.executeQuery(sql);
+			
+			while(rs.next()) {
+				acct.setId(rs.getInt(1));
+				acct.setAccountID(rs.getInt(2));
+				acct.setBalance(rs.getInt(3));
+
+			}
+			return acct;
+		}catch(SQLException e) {
 			e.printStackTrace();
 		}
 		return null;

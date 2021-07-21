@@ -33,4 +33,7 @@ public interface AccountDao {
 
 	void deleteUserAccount(Account a);
 
+
+	Account getAccountByAccoiuntId(int accountId);
+
 }

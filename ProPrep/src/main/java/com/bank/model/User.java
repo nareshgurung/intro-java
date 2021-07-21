@@ -110,7 +110,7 @@ public class User {
 	
 	@Override
 	public String toString() {
-		return "User: "+ "id " + id + firstName + ", " + lastName + " with ID- " + userName;
+		return "User Name: " + firstName + ", " + lastName + " with ID- " + userName;
 	}
 	
 }

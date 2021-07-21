@@ -29,8 +29,9 @@ public static void main(String[] args) {
 	
 	Scanner sc = new Scanner(System.in);
 	
+	System.out.println("Banking Application");
 	User curUser = null;
-	Employee employee = null;
+	Employee employee;
 	Account account = null;
 	while(true) {
 		System.out.println("Please tell us Who are you (Customer/Employee): ");
@@ -40,8 +41,7 @@ public static void main(String[] args) {
 			curUser = mainMenuPrompt(curUser, sc);
 			//stay in main menu until user quits
 			//printUserMenu(curUser, theBanking, sc);
-			System.out.println("checking Account no:" + curUser.getCheckingAccount());
-			System.out.println("saving Account no:" + curUser.getSavingAccount());
+			
 			int choice;
 		//user menu 
 		do {
@@ -97,6 +97,7 @@ else if(differ.equalsIgnoreCase("employee")) {
 				employee =eServ.addEmployee(efirstname, elastname, epassword); // need to add employee in the bank
 				System.out.println("Welcome to you ");
 				System.out.println(employee);
+			printEmployeeMenu(employee, sc);
 			} catch(Exception e) {
 				System.out.println("Username or password was incorect. Goodbye");
 			}
@@ -109,7 +110,7 @@ else if(differ.equalsIgnoreCase("employee")) {
 			String ePass = sc.nextLine();
 				employee = eServ.employeeLogin(eId, ePass);  //need to create employee login in bank
 				System.out.println(employee);
-				printEmployeeMenu(employee, sc);
+			printEmployeeMenu(employee, sc);
 			break;
 		}
 //		printEmployeeMenu(emp, sc);
@@ -126,7 +127,7 @@ public static void deposit(Account acct, Scanner sc) {
 	System.out.println("Enter the deposit Amount: ");
 	int amount = sc.nextInt();
 	try {
-		account = aServ.addDeposit(usr, amount);
+		account = aServ.addBalance(usr, amount);
 //		System.out.println(account);
 	}catch(Exception e) {
 		e.printStackTrace();
@@ -135,11 +136,11 @@ public static void deposit(Account acct, Scanner sc) {
 
 public static void viewAccount(Account accounts, Scanner sc) {
 	Account act;
+	User usr;
 		System.out.println("Please enter the account Number: ");
 		int aNumber = sc.nextInt();
 		try {
-			act = aServ.viewAccount(aNumber);
-			System.out.println();
+			act = aServ.viewAccount(aNumber);	
 			System.out.println(act);
 		}catch(Exception e) {
 			System.out.println("invalid accountNumber");
@@ -181,6 +182,7 @@ public static User mainMenuPrompt(User users, Scanner sc) {
 	String userID;
 	String pin;
 	User authUser = null;
+	Account account;
 	/////////////////////////////////////////////////
 	do {
 	System.out.println("Login or Signup? Press 1 to signup as customer, Press 2 to Sigin");
@@ -197,7 +199,14 @@ public static User mainMenuPrompt(User users, Scanner sc) {
 			try {
 				authUser =uServ.addUser(firstname, lastname, password);
 				System.out.println(authUser);
-				System.out.println("Welcome to you " );
+				System.out.println("Welcome to you "+ authUser.getFirstName());
+				System.out.println("checking Account no:" + authUser.getCheckingAccount());
+				System.out.println("saving Account no:" + authUser.getSavingAccount());
+				System.out.println("Enter the Account number for Initial Deposit ");
+				int initid= sc.nextInt();
+				System.out.println("Enter the amount: ");
+				int initAmount = sc.nextInt();
+				account = aServ.initDeposit(initid, initAmount); 
 			} catch(Exception e) {
 				System.out.println("you are not able to singUp. Goodbye");
 			}
@@ -213,7 +222,8 @@ public static User mainMenuPrompt(User users, Scanner sc) {
 			//try to get the user object corresponding to the ID and pin combo
 			try {
 				authUser = uServ.userLogin(userID,  pin);
-//				System.out.println("you are logged in ");
+				System.out.println("checking Account no:" + authUser.getCheckingAccount());
+				System.out.println("saving Account no:" + authUser.getSavingAccount());
 			}catch(Exception e) {		
 				System.out.println("Incorrect user ID/pin combination. Please try again. ");
 			}
@@ -228,7 +238,6 @@ public static User mainMenuPrompt(User users, Scanner sc) {
 	public static void printEmployeeMenu(Employee emp, Scanner sc) {
 		
 		//print a summary of the user's accounts
-//		theUser.printAccountsSummary();
 		//init
 		int choice;
 		Account account = null;
@@ -315,21 +324,28 @@ public static User mainMenuPrompt(User users, Scanner sc) {
 		Scanner sc=new Scanner(System.in);
 //		//Employee empusr;
 		User usr;
-				Account acc;
-		System.out.println("Do you have your SSN: ");
-		String ssn= sc.nextLine();
-		if(ssn.equalsIgnoreCase("yes"))
+		Account acc;
+		System.out.println("Do you have your SSN:(yes/no) ");
+		String ch= sc.nextLine();
+		if(ch.equalsIgnoreCase("yes"))
 		{
 			System.out.println("Enter the user's firstname: ");
 			String first = sc.nextLine();
 			System.out.println("Enter the user's lastName: "); 
 			String last =sc.nextLine(); 
-			System.out.println("Enter the user's username:"); 
-			String user = sc.nextLine();
 			System.out.println("Enter the user's password:"); 
 			String pwd = sc.nextLine();
 		
 			usr=uServ.addUser(first,last,pwd);
+			System.out.println("checking Account no:" + usr.getCheckingAccount());
+			System.out.println("saving Account no:" + usr.getSavingAccount());
+			System.out.println("Enter the Account number for Initial Deposit ");
+			int initid= sc.nextInt();
+			System.out.println("Enter the amount: ");
+			int initAmount = sc.nextInt();
+			acc = aServ.initDeposit(initid, initAmount);
+			System.out.println("your are approved");
+			System.out.println(usr);
 		}
 		else
 			System.out.println("Account Creation Rejected as no SSN! ");

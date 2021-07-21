@@ -3,6 +3,7 @@ package com.bank.model;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Random;
 import java.util.logging.Logger;
 
@@ -47,15 +48,7 @@ public class UserService {
 		
 		return newUser;
 	}
-	public User removeUser(String userName) {
-		Iterator itr = users.iterator();
-		while(itr.hasNext()) {
-			if(itr.equals(userName)) {
-				itr.remove();
-			}
-		}
-		return null;
-	}
+	
 	public User userLogin(String userID, String password) throws UserDoesNotExistException, InvalidCredentialsException{
 		
 		User u = uDao.getUserByUsername(userID);
@@ -70,18 +63,7 @@ public class UserService {
 			}
 			return u;
 	}
-//	public String getName() {
-//		return name;
-//	}
-//
-//
-//	@Override
-//	public String toString() {
-//		return "Bank of Shine";
-//	}
 
-
-	
 	// delete user is not working 
 	public User deleteUser(String name, String last, String username) throws InvalidCredentialsException {	
 		User u = new User(name, last, username);
